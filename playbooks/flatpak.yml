@@ -1,0 +1,17 @@
+- name: Install desktop usage flatpaks
+  hosts: localhost
+  connection: local
+
+  tasks: 
+    - name: Install flatpaks
+      community.general.flatpak:
+        name: 
+          - com.discordapp.Discord
+          - org.blender.Blender
+          - org.chromium.Chromium
+          - org.gimp.GIMP
+          - org.inkscape.Inkscape
+          - org.kde.krita
+          - org.mozilla.firefox
+          - org.telegram.desktop
+        state: present
