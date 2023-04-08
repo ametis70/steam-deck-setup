@@ -1,6 +1,31 @@
-#!/bin/sh
+#!/bin/bash
+
+set -euo pipefail
 
 if [ $EUID != 0 ]; then
     echo "This script should be run as root"
     exit 1
 fi
+
+printf "\nDisabling SteamOS readonly FS\n"
+if [ ! $(sudo steamos-readonly status) = "disabled" ]; then
+    steamos-readonly disable
+    echo "Initializing Arch Linux keyring and populating keys"
+    pacman-key --init
+    pacman-key --populate archlinux
+    pacman-key --populate holo
+else
+    echo "skipped: SteamOS readonly FS already disabled"
+fi
+
+printf "\nInstalling Ansible\n"
+if ! pacman -Q ansible &> /dev/null; then
+    pacman -Sy --noconfirm ansible
+else
+    echo "skipped: Ansible already installed"
+fi
+
+printf "\nRunning playbooks\n"
+for playbook in playbooks/*.yml; do
+    ansible-playbook -i localhost, "$playbook"
+done
