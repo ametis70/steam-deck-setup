@@ -1,0 +1,28 @@
+- name: Install and enable libvirt
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: Install packages needed for virtualization
+      community.general.pacman:
+        name:
+          - qemu-desktop
+          - libvirt 
+          - edk2-ovmf 
+          - virt-manager 
+          - dnsmasq 
+          - virt-viewer
+        state: present
+
+    - name: Enable and start libvirt daemon
+      ansible.builtin.systemd:
+        state: started
+        enabled: true
+        name: libvirtd
+
+    - name: Add user to libvirt group
+      ansible.builtin.user:
+        name: deck
+        groups: libvirt
+        append: yes 
