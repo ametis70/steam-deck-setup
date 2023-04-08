@@ -1,0 +1,22 @@
+- name: Essentials setup
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: Install essential pacman packages
+      community.general.pacman:
+        name:
+          - neovim 
+          - gnupg
+          - pass
+          - xclip
+        state: present
+
+    - name: Link nvim to vi
+      ansible.builtin.file:
+        src: /usr/bin/nvim
+        dest: /usr/bin/vi
+        owner: root
+        group: root
+        state: link
