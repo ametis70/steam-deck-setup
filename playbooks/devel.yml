@@ -1,0 +1,19 @@
+- name: Develop packages setup
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: Install base-devel metapackage
+      community.general.pacman:
+        name:
+          - base-devel
+        state: present
+
+    - name: Install missing files for glibc and Linux API headers 
+      community.general.pacman:
+        name:
+          - glibc
+          - linux-api-headers
+        extra_args: --overwrite '*'
+        state: present
