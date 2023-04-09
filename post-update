@@ -2,10 +2,7 @@
 
 set -euo pipefail
 
-if [ $EUID != 0 ]; then
-    echo "This script should be run as root"
-    exit 1
-fi
+[ "$UID" -eq 0 ] || exec sudo "$0" "$@"
 
 printf "\nDisabling SteamOS readonly FS\n"
 if [ ! $(sudo steamos-readonly status) = "disabled" ]; then
