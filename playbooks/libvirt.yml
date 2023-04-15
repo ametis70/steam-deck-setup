@@ -52,12 +52,12 @@
         state: active
         autostart: true
 
-    - name: Enables autostart for 'default' network
+    - name: Enable autostart for 'default' network
       community.libvirt.virt_net:
         autostart: yes
         name: default
 
-    - name: Define vm from xml and set autostart
+    - name: Add 'arch' vm and enable autostart
       community.libvirt.virt:
         command: define
         xml: "{{ lookup('file', '../libvirt/domains/arch.xml') }}"
