@@ -56,3 +56,9 @@
       community.libvirt.virt_net:
         autostart: yes
         name: default
+
+    - name: Define vm from xml and set autostart
+      community.libvirt.virt:
+        command: define
+        xml: "{{ lookup('file', '../libvirt/domains/arch.xml') }}"
+        autostart: yes
