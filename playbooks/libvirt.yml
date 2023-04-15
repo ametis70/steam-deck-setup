@@ -13,6 +13,7 @@
           - virt-manager 
           - dnsmasq 
           - virt-viewer
+          - python-lxml
         state: present
 
     - name: Enable and start libvirt daemon
@@ -26,3 +27,32 @@
         name: deck
         groups: libvirt
         append: yes 
+
+    - name: Add 'disks' pool
+      community.libvirt.virt_pool:
+        name: disks
+        command: define
+        xml: '{{ lookup("file", "../libvirt/pools/disks.xml") }}'
+
+    - name: Enable autostart for 'disks' pool
+      community.libvirt.virt_pool:
+        name: disks
+        state: active
+        autostart: true
+
+    - name: Add 'images' pool
+      community.libvirt.virt_pool:
+        name: images
+        command: define
+        xml: '{{ lookup("file", "../libvirt/pools/images.xml") }}'
+
+    - name: Enable autostart for 'images' pool
+      community.libvirt.virt_pool:
+        name: images 
+        state: active
+        autostart: true
+
+    - name: Enables autostart for 'default' network
+      community.libvirt.virt_net:
+        autostart: yes
+        name: default
