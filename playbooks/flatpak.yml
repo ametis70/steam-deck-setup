@@ -15,4 +15,5 @@
           - org.mozilla.firefox
           - org.telegram.desktop
           - org.remmina.Remmina
+          - org.kde.okular
         state: present
