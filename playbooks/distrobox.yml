@@ -1,0 +1,38 @@
+- name: Install yay
+  ansible.builtin.import_playbook: yay.yml
+
+- name: Distrobox setup
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Install packages from official repositories
+      community.general.pacman:
+        name:
+          - podman 
+        state: latest
+        update_cache: true
+      become: yes
+
+    - name: Install packages from AUR
+      community.general.pacman:
+        name:
+          - distrobox-git
+        state: latest
+        update_cache: true
+        executable: yay
+
+    - name: Set overlay diff engine
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/disable-overlay-redirect-dir.conf
+        regexp: '^options'
+        line: 'options overlay metacopy=off redirect_dir=off'
+        create: true
+      become: yes
+
+    - name: Set containers storage path
+      ansible.builtin.lineinfile:
+        path: /etc/containers/storage.conf
+        regexp: '^graphroot'
+        line: 'graphroot = "/home/deck/.local/lib/containers/storage"'
+      become: yes
