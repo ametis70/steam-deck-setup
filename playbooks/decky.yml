@@ -4,8 +4,7 @@
   become: yes
 
   tasks:
-
-    - name: Check if Deck is already installed
+    - name: Check if Decky is already installed
       ansible.builtin.command: test -f /etc/systemd/system/plugin_loader.service
       register: exists 
       ignore_errors: True
