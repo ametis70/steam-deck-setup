@@ -1,0 +1,10 @@
+[Unit]
+Description=Restart BT service upon resume
+After=suspend.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/resume-bt
+
+[Install]
+WantedBy=suspend.target

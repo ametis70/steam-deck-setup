@@ -1,0 +1,36 @@
+- name: Bluetooth config
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: Auto enable power on startup
+      ansible.builtin.lineinfile:
+        path: /etc/bluetooth/main.conf
+        regexp: 'AutoEnable'
+        line: 'AutoEnable=true'
+
+    - name: Copy systemd unit to restart BT on power resume
+      ansible.builtin.copy:
+        src: '../data/bluetooth/resume-bt.service'
+        dest: /etc/systemd/system
+        owner: root
+        group: root 
+        mode: '0755'
+
+    - name: Copy script to restart bluetooth service
+      ansible.builtin.copy:
+        src: '../data/bluetooth/resume-bt'
+        dest: /usr/local/bin/resume-bt
+        owner: root
+        group: root 
+        mode: '0755'
+
+    - name: Enable service
+      ansible.builtin.systemd:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: resume-bt
+
+
