@@ -1,6 +1,3 @@
-- name: Install yay
-  ansible.builtin.import_playbook: yay.yml
-
 - name: Distrobox setup
   hosts: localhost
   connection: local
@@ -10,17 +7,10 @@
       community.general.pacman:
         name:
           - podman 
+          - distrobox
         state: latest
         update_cache: true
       become: yes
-
-    - name: Install packages from AUR
-      community.general.pacman:
-        name:
-          - distrobox-git
-        state: latest
-        update_cache: true
-        executable: yay
 
     - name: Set overlay diff engine
       ansible.builtin.lineinfile:
