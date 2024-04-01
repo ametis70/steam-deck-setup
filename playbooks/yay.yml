@@ -8,9 +8,25 @@
         repo: https://aur.archlinux.org/yay-bin.git
         dest: "/tmp/yay"
         update: true
-    
+
+    - name: Mark temp yay directory as safe
+      community.general.git_config:
+        name: safe.directory
+        # add_mode: add
+        scope: global
+        value: "/tmp/yay"
+        state: present
+
     - name: Build and install yay
       command:
         chdir: "/tmp/yay"
-        cmd: "makepkg -sfi --noconfirm"
+        cmd: "env EUID=1 makepkg -sfi --noconfirm"
         creates: /usr/bin/yay
+
+    - name: Remove temp yay directory from safelist
+      community.general.git_config:
+        name: safe.directory
+        # add_mode: add
+        scope: global
+        value: "/tmp/yay"
+        state: absent
