@@ -4,6 +4,11 @@
   become: yes
 
   tasks:
+    - name: Remove fakeroot ld file
+      ansible.builtin.file:
+        path: /etc/ld.so.conf.d/fakeroot.conf
+        state: absent
+
     - name: Install base-devel metapackage
       community.general.pacman:
         name:
