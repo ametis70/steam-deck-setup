@@ -13,10 +13,10 @@
       ansible.builtin.get_url:
         url: https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/install_release.sh  
         dest: /tmp/decky_install_release.sh
-      when: exists is failed
+#      when: exists is failed
     
     - name: Run Decky install script
       ansible.builtin.shell:
         cmd: cat /tmp/decky_install_release.sh | sh
-        creates: /etc/systemd/system/plugin_loader.service
-      when: exists is failed
+#       creates: /etc/systemd/system/plugin_loader.service
+#     when: exists is failed
